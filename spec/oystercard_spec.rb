@@ -2,10 +2,16 @@ require 'oystercard'
 
 describe Oystercard do
 
+  # minimum fare limit
   let(:limit) { described_class::MINIMUM_FARE }
-  let(:touched_in) { described_class.new(50, station) }
+
+  # cards in touched-in and touched-out states
+  let(:touched_in) { described_class.new(50, station_in) }
   let(:touched_out) { described_class.new(50) }
-  let(:station) { double(:station)}
+
+  # sample entry and exit station
+  let(:station_in) { double(:station_in) }
+  let(:station_out) { double(:station_out) }
 
   describe 'creates with' do
     context 'in_journey? which' do
@@ -24,9 +30,19 @@ describe Oystercard do
       end
     end
 
-    context 'entry station which' do
+    context 'entry station_in which' do
       it 'is nil by default' do
         expect(subject.entry_station).to be_nil
+      end
+    end
+
+    context 'list of journeys which' do
+      it 'is an array' do
+        expect(subject.journeys).to be_a Array
+      end
+
+      it 'is empty' do
+        expect(subject.journeys).to be_empty
       end
     end
   end
@@ -63,20 +79,20 @@ describe Oystercard do
 
     context 'journey instance variable' do
       it 'becomes true' do
-        expect(subject.touch_in('').in_journey?).to be true
+        expect(subject.touch_in(station_in).in_journey?).to be true
       end
     end
 
     context 'cannot touch in if' do
       it 'balance is insufficient' do
         subject = described_class.new(limit - 0.1)
-        expect { subject.touch_in(station) }.to raise_error RuntimeError
+        expect { subject.touch_in(station_in) }.to raise_error RuntimeError
       end
     end
 
-    context 'remembers last entry station because it' do
-      it 'saves last station in instance variable' do
-        expect(subject.touch_in(station).entry_station).to eq station
+    context 'remembers last entry station_in because it' do
+      it 'saves last station_in in instance variable' do
+        expect(subject.touch_in(station_in).entry_station).to eq station_in
       end
     end
   end
@@ -87,12 +103,25 @@ describe Oystercard do
 
     context 'journey instance variable' do
       it 'becomes false' do
-        expect(subject.touch_out).to_not be_in_journey
+        expect(subject.touch_out(station_out)).to_not be_in_journey
       end
     end
 
     it 'reduces balance by mimimum amount' do
-      expect { subject.touch_out }.to change { subject.balance }.by(-1)
+      expect { subject.touch_out(station_out) }
+        .to change { subject.balance }.by(-1)
+    end
+
+    context 'to save entry and exit station' do
+      it 'saves entry and exit as a hash in journeys' do
+        expect(subject.touch_out(station_out).journeys.last)
+          .to eq({station_in => station_out})
+      end
+
+      it 'adds one extra journey to journey array' do
+        expect { subject.touch_out(station_out) }
+          .to change { subject.journeys.length }.by(1)
+      end
     end
   end
 end
