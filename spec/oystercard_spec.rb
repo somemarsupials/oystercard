@@ -2,6 +2,14 @@ require 'oystercard'
 
 describe Oystercard do
   describe 'creates with' do
+    context 'in_journey? which' do
+      it 'is 0 by default' do
+        expect(subject).to_not be_in_journey
+      end
+    end
+
+
+
     context 'balance which' do
       it 'is 0 by default' do
         expect(subject.balance).to eq 0
@@ -52,4 +60,22 @@ describe Oystercard do
       end
     end
   end
+
+describe '#touch_in' do
+  context 'journey instance variable' do
+    it 'becomes true' do
+      expect(subject.touch_in.in_journey?).to be true
+    end
+  end
+end
+
+describe '#touch_out' do
+  context 'journey instance variable' do
+    it 'becomes false' do
+      expect(subject.touch_out.in_journey?).to be false
+    end
+  end
+end
+
+
 end
