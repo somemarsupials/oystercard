@@ -4,9 +4,9 @@ class Oystercard
   MINIMUM_FARE = 1
   LIMIT = 90
 
-  def initialize(balance = 0)
+  def initialize(balance = 0, in_journey = false)
     @balance = 0
-    @in_journey = false
+    @in_journey = in_journey
     top_up(balance)
     self
   end
@@ -21,10 +21,6 @@ class Oystercard
     balance
   end
 
-  def deduct(amount)
-    @balance -= amount
-  end
-
   def touch_in
     raise "insufficient balance" if below_minimum?
     @in_journey = true
@@ -33,6 +29,7 @@ class Oystercard
 
   def touch_out
     @in_journey = false
+    deduct(MINIMUM_FARE)
     self
   end
 
@@ -44,6 +41,10 @@ class Oystercard
 
   def below_minimum?
     balance < MINIMUM_FARE
+  end
+
+  def deduct(amount)
+    @balance -= amount
   end
 
 
