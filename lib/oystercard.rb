@@ -4,15 +4,15 @@ class Oystercard
   MINIMUM_FARE = 1
   LIMIT = 90
 
-  def initialize(balance = 0, in_journey = false)
+  def initialize(balance = 0, station = nil)
     @balance = 0
-    @in_journey = in_journey
+    @entry_station = station
     top_up(balance)
     self
   end
 
   def in_journey?
-    @in_journey
+    !!@entry_station
   end
 
   def top_up(amount)
@@ -24,13 +24,12 @@ class Oystercard
   def touch_in(station)
     raise "insufficient balance" if below_minimum?
     @entry_station = station
-    @in_journey = true
     self
   end
 
   def touch_out
-    @in_journey = false
     deduct(MINIMUM_FARE)
+    @entry_station = nil
     self
   end
 
