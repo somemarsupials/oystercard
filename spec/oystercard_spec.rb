@@ -37,4 +37,19 @@ describe Oystercard do
       end
     end
   end
+
+  describe '#deduct' do
+
+    subject { described_class.new(30) }
+
+    context 'removes' do
+      it '10 from balance' do
+        expect { subject.deduct(10) }.to change { subject.balance }.by(-10)
+      end
+
+      it '20 from balance' do
+        expect { subject.deduct(20) }.to change { subject.balance }.by(-20)
+      end
+    end
+  end
 end
