@@ -22,17 +22,25 @@ describe Oystercard do
         expect(touched_out.balance).to eq 50
       end
     end
+
+    context 'entry station which' do
+      it 'is nil by default' do
+        expect(subject.entry_station).to be_nil
+      end
+    end
   end
 
   describe '#top_up' do
     context 'balance' do
 
+      subject { touched_out }
+
       it 'increases by 10' do
-        expect(touched_out.top_up(10)).to eq 60
+        expect(subject.top_up(10)).to eq 60
       end
 
       it 'increases by 20' do
-        expect(touched_out.top_up(20)).to eq 70
+        expect(subject.top_up(20)).to eq 70
       end
     end
 
@@ -42,39 +50,48 @@ describe Oystercard do
       end
 
       it 'raises error when amount exceeds 90, starting at 50' do
-        expect { touched_out.top_up(41) }.to raise_error RuntimeError
+        subject = touched_in
+        expect { subject.top_up(41) }.to raise_error RuntimeError
       end
     end
   end
 
   describe '#touch_in' do
 
+    subject { touched_out }
+
     context 'journey instance variable' do
       it 'becomes true' do
-        expect(touched_in.touch_in.in_journey?).to be true
+        expect(subject.touch_in('').in_journey?).to be true
       end
     end
 
     context 'cannot touch in if' do
       it 'balance is insufficient' do
         subject = described_class.new(limit - 0.1)
-        expect { subject.touch_in }.to raise_error RuntimeError
+        expect { subject.touch_in("soho") }.to raise_error RuntimeError
+      end
+    end
+
+    context 'remembers last entry station because it' do
+      it 'saves last station in instance variable' do
+        expect(subject.touch_in("soho").entry_station).to eq "soho"
       end
     end
   end
 
   describe '#touch_out' do
-    subject { described_class.new(30)}
+
+    subject { touched_in }
 
     context 'journey instance variable' do
       it 'becomes false' do
-        expect(touched_in.touch_out.in_journey?).to be false
+        expect(subject.touch_out.in_journey?).to be false
       end
     end
 
     it 'reduces balance by mimimum amount' do
-      expect { touched_in.touch_out }.to change { touched_in.balance }.by(-1)
+      expect { subject.touch_out }.to change { subject.balance }.by(-1)
     end
   end
-
 end
