@@ -4,11 +4,9 @@ describe Oystercard do
   describe 'creates with' do
     context 'in_journey? which' do
       it 'is 0 by default' do
-        expect(subject).to_not be_in_journey
+        expect(subject).to_not be_in_journey?
       end
     end
-
-
 
     context 'balance which' do
       it 'is 0 by default' do
