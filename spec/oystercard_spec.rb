@@ -1,10 +1,13 @@
 require 'oystercard'
 
 describe Oystercard do
+  
+  let(:limit) { Oystercard::MINIMUM_FARE }
+
   describe 'creates with' do
     context 'in_journey? which' do
       it 'is 0 by default' do
-        expect(subject).to_not be_in_journey?
+        expect(subject).to_not be_in_journey
       end
     end
 
@@ -59,21 +62,29 @@ describe Oystercard do
     end
   end
 
-describe '#touch_in' do
-  context 'journey instance variable' do
-    it 'becomes true' do
-      expect(subject.touch_in.in_journey?).to be true
+  describe '#touch_in' do
+
+    subject { described_class.new(10) }
+    
+    context 'journey instance variable' do
+      it 'becomes true' do
+        expect(subject.touch_in.in_journey?).to be true
+      end
+    end
+
+    context 'cannot touch in if' do
+      it 'balance is insufficient' do
+        subject = described_class.new(limit - 0.1)
+        expect { subject.touch_in }.to raise_error RuntimeError
+      end
     end
   end
-end
 
-describe '#touch_out' do
-  context 'journey instance variable' do
-    it 'becomes false' do
-      expect(subject.touch_out.in_journey?).to be false
+  describe '#touch_out' do
+    context 'journey instance variable' do
+      it 'becomes false' do
+        expect(subject.touch_out.in_journey?).to be false
+      end
     end
   end
-end
-
-
 end
