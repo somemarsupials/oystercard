@@ -1,13 +1,8 @@
 require 'oystercard'
 
-
-
 describe Oystercard do
-
-  # without any other information, subject == Oystercard.new
-
-  describe "creates with" do
-    context "balance which" do
+  describe 'creates with' do
+    context 'balance which' do
       it 'is 0 by default' do
         expect(subject.balance).to eq 0
       end
@@ -19,9 +14,7 @@ describe Oystercard do
   end
 
   describe '#top_up' do
-    context "balance" do
-
-      # start of the context block
+    context 'balance' do
       subject { described_class.new(10) }
 
       it 'increases by 10' do
@@ -31,15 +24,14 @@ describe Oystercard do
       it 'increases by 20' do
         expect(subject.top_up(20)).to eq 30
       end
-      # end of the context block
     end
 
     context 'topping up' do
-      it 'raises an error when amount is above 90, starting at 0' do
+      it 'raises error when amount exceeds 90, starting at 0' do
         expect { subject.top_up(91) }.to raise_error RuntimeError
       end
 
-      it 'raises an error when amount is above 90, starting at 20' do
+      it 'raises error when amount exceeds 90, starting at 20' do
         subject = described_class.new(20)
         expect { subject.top_up(71) }.to raise_error RuntimeError
       end
