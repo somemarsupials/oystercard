@@ -5,9 +5,12 @@ describe Oystercard do
   # minimum fare limit
   let(:limit) { described_class::MINIMUM_FARE }
 
+  # mock journey class
+  let(:mock_journey_class) { double(:journey_class) }
+
   # cards in touched-in and touched-out states
-  let(:touched_in) { described_class.new(50, station_in) }
-  let(:touched_out) { described_class.new(50) }
+  let(:touched_in) { described_class.new(50, station_in, mock_journey_class) }
+  let(:touched_out) { described_class.new(50, nil, mock_journey_class) }
 
   # sample entry and exit station
   let(:station_in) { double(:station_in) }
@@ -53,11 +56,13 @@ describe Oystercard do
       subject { touched_out }
 
       it 'increases by 10' do
-        expect(subject.top_up(10)).to eq 60
+        subject.top_up(10)
+        expect(subject.balance).to eq 60
       end
 
       it 'increases by 20' do
-        expect(subject.top_up(20)).to eq 70
+        subject.top_up(20)
+        expect(subject.balance).to eq 70
       end
     end
 
@@ -114,8 +119,9 @@ describe Oystercard do
 
     context 'to save entry and exit station' do
       it 'saves entry and exit as a hash in journeys' do
-        expect(subject.touch_out(station_out).journeys.last)
-          .to eq({station_in => station_out})
+        expect(mock_journey_class).to receive(:new)
+          .with(station_in, station_out)
+        subject.touch_out(station_out)
       end
 
       it 'adds one extra journey to journey array' do
