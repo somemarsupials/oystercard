@@ -1,6 +1,5 @@
-
-
 class Station
+
   attr_reader :name, :zone
 
   STATIONS = {
@@ -11,6 +10,7 @@ class Station
 
   def initialize(name)
     @name = name
-    @zone = STATIONS[name]
+    @zone = [STATIONS]name
   end
+
 end

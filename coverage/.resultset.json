@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/theo/projects/ma/week-2/oyster/spec/journey_spec.rb": [
+      "/Users/josephcowton/projects/oystercard/spec/journey_spec.rb": [
         1,
         null,
         1,
@@ -33,7 +33,7 @@
         null,
         null
       ],
-      "/Users/theo/projects/ma/week-2/oyster/lib/journey.rb": [
+      "/Users/josephcowton/projects/oystercard/lib/journey.rb": [
         1,
         1,
         null,
@@ -43,7 +43,7 @@
         null,
         null
       ],
-      "/Users/theo/projects/ma/week-2/oyster/spec/oystercard_spec.rb": [
+      "/Users/josephcowton/projects/oystercard/spec/oystercard_spec.rb": [
         1,
         null,
         1,
@@ -178,7 +178,7 @@
         null,
         null
       ],
-      "/Users/theo/projects/ma/week-2/oyster/lib/oystercard.rb": [
+      "/Users/josephcowton/projects/oystercard/lib/oystercard.rb": [
         1,
         1,
         null,
@@ -234,7 +234,7 @@
         null,
         null
       ],
-      "/Users/theo/projects/ma/week-2/oyster/spec/station_spec.rb": [
+      "/Users/josephcowton/projects/oystercard/spec/station_spec.rb": [
         1,
         null,
         1,
@@ -255,7 +255,7 @@
         null,
         null
       ],
-      "/Users/theo/projects/ma/week-2/oyster/lib/station.rb": [
+      "/Users/josephcowton/projects/oystercard/lib/station.rb": [
         null,
         null,
         1,
@@ -274,6 +274,6 @@
         null
       ]
     },
-    "timestamp": 1509469272
+    "timestamp": 1509484790
   }
 }
